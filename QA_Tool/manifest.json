@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Link Status Checker",
+  "version": "1.0",
+  "description": "Check all links on a webpage for their status codes and other details.",
+  "permissions": ["activeTab", "scripting", "tabs", "storage", "declarativeContent", "sidePanel"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup1.html",
+    "default_icon": "icon.png"
+  },
+  "side_panel": {
+    "default_path": "popup1.html",
+    "keep_opened": true // Add this line
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["*.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "host_permissions": ["<all_urls>"]
+}
+
+
+  
+  

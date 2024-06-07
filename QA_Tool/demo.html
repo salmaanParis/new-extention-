@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Link Checker</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap"
+      rel="stylesheet"
+    />
+</head>
+<body>
+  <div id="header">
+    <img id="icon" src="./icon.png" alt="image of url" />
+    <h2>URL Analyzer</h2>
+
+    <button id="nightModeButton"><i class="fa-regular fa-moon"></i></button>
+ </div>
+  <div id="initial-view">
+    <div id="check-list">
+      <div>
+        <div>
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="checkAllDetails" />
+            
+            <label for="enable-check-4">Check all details</label>
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text">Click to select all.</span>
+            </div>
+           
+          </div>
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="checkAllLinks" />
+            <label for="enable-check-1">Check all links</label>
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text">Click to to get the details of all links pesent in the current page</span>
+            </div>
+           
+          </div>
+
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="checkBrokenLinks" />
+            
+            <label for="enable-check-2">Check broken links</label>
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text">Click to to get the details of all broken links pesent in the current page</span>
+            </div>
+
+            
+          </div>
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="checkLocalLanguageLinks" />
+            
+            <label for="enable-check-3">Check local language links</label>
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text">Click to to get the details of all locals pesent in the current page</span>
+            </div>
+
+            
+          </div>
+
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="checkHeading" />
+            
+            <label for="enable-check-4">Heading Hierarchy Check</label>
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text">Click to to get the headings pesent in the current page in sorted order</span>
+            </div>
+
+            
+          </div>
+
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="ariaCheck" />
+            
+            <label for="enable-check-4">Aria Label Check</label>
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text">Click to to get the Aria label details pesent in the current page</span>
+            </div>
+
+            
+          </div>
+
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="imageCheck" />
+            
+            <label for="enable-check-4">Image Check</label>
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text">Click to to get all the image's details pesent in the current page</span>
+            </div>
+
+            
+          </div>
+
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="metaCheck" />
+            
+            <label for="enable-check-4">Page Properties Check</label>
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text">Click to to get the page properties details pesent in the current page</span>
+            </div>
+
+            
+          </div>
+
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="akaCheck" />
+            
+            <label for="enable-check-4">Short URL Check</label> 
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text">Click to to get the short URLs(will check for aka.ms for now) pesent in the current page </span>
+            </div>  
+
+            
+          </div>
+
+          <div class="checkbox-container">
+            <i class="fas fa-link"></i>
+            <input type="checkbox" id="redirectCheck" />
+            
+            <label for="enable-check-4">Redirecitng Link Check</label> 
+            <div class="info-container">
+              <span class="question-icon">?</span>
+              <span class="tooltip-text"></span>
+            </div>  
+
+            
+          </div>
+
+
+          
+        
+        </div>
+      </div>
+
+     <div>
+      <div class="switch-container">
+        <label class="switch">
+          <input type="checkbox" id="toggleSelector">
+          <span class="slider round"></span>
+        </label>
+        <label for="toggleSelector">Skip UHF</label>
+      </div>
+      <br><br>
+    
+          <div id="text-area">
+            <textarea
+  name=""
+  id="compare-url"
+  placeholder="You can paste your URL here"
+  rows="4" cols="40"></textarea>
+
+            <br />
+            <br />
+            <button id="compare-button">Compare</button>
+          </div>
+        </div>
+      </div>
+        
+        <div>
+    <form id="optionsForm">
+
+      
+      <div id="buttonClass">
+        <button type="button" id="doneButton">Generate</button>
+      <button type="button" id="previewButton">Preview</button>
+      <button type="button" id="clear">Clear</button>
+      <button type="button" id="downloadExcelButton"><i class="fa-solid fa-file-excel"></i> Download as Excel</button>
+      </div><br>
+      <div id="countdown"></div></div>
+    </form>
+      </div>
+      </div>
+      
+    </div>
+   
+    
+  </div>
+
+  <div id="comparisonResults" style="display:none;">
+    <h2>Text Fields Comparison</h2><button type="button" id="downloadComparisonButton"><i class="fa-solid fa-code-compare"></i> Download Comparison </button>
+    <thead>
+  <table id="text-comparison">
+        <tr>
+            <th>Current Page</th>
+            <th>Target Page</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+<h2>ARIA-label Links Comparison</h2>
+<table id="aria-comparison">
+    <thead>
+        <tr>
+            <th>Current Page</th>
+            <th>Target Page</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<h2>Images Comparison</h2>
+<table id="images-comparison">
+    <thead>
+        <tr>
+            <th>Current Page</th>
+            <th>Target Page</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<h2>Page Properties Comparison</h2>
+<table id="meta-comparison">
+    <thead>
+        <tr>
+            <th>Current Page</th>
+            <th>Target Page</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<h2>Heading Comparison</h2>
+<table id="head-comparison">
+    <thead>
+        <tr>
+            <th>Current Page</th>
+            <th>Target Page</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+  </div>
+    <div id="result" style="display:none;">
+      <h2>Results</h2>
+      <h4>All links</h4>
+      <div id="allLinksTable">
+      </div>
+
+      <h4>Broken links</h4>
+      <div id="brokenLinksTable">
+      </div>
+
+      <h4>Language Locals</h4>
+      <div id="localLanguageLinksTable">
+      </div>
+      
+      <h4>Headings</h4>
+      <div id="headingTable">
+      </div>
+
+      <h4>Aria labels</h4>
+      <div id="ariaTable">
+      </div>
+
+      <h4>Image src and alt texts</h4>
+      <div id="imageTable">
+      </div>
+
+      <h4>Page Properties</h4>
+      <div id="metaTable">
+      </div>
+
+      <h4>Short URLs</h4>
+      <div id="akaTable">
+      </div>
+
+      <h4>Redirect URLs</h4>
+      <div id="redirectTable">
+      </div>
+
+    </div>
+  <script src="popup.js"></script>
+  <script src="libs/jspdf.umd.min.js"></script>
+  <script src="libs/jspdf.plugin.autotable.min.js"></script>
+  <script src="libs/xlsx.full.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+
+body { font-family: Arial, sans-serif; }
+.container { margin: 15px; }
+table { width: 100%; border-collapse: collapse; }
+table, th, td { border: 1px solid black; }
+th, td { padding: 8px; text-align: left; }
+#initial-view{
+    width: 640px;
+    padding: 30px;
+    text-align: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f9f9f9;
+    border: 2px solid #d3c3c3;
+    border-radius: 20px;
+   
+   
+    
+}
+
+#result-view { 
+    background-color: white;
+    width: 640px;
+    display: none; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+
+
+/* style for main heading in the initial view */
+#header{
+  display: flex;
+  justify-content:flex-start;
+  /* margin-left: 50px; */
+}
+
+#icon{
+  /* margin-right: 10px; */
+  height: 30px;
+  width: 30px;
+  padding-top: 21px;
+}
+
+h2 {
+    /* border: solid 1px rgb(24, 112, 167); */
+    padding-left: 52px;
+    color: black;
+    font-size: 25px;
+    margin-left: -44px;
+    margin-right: -47px;
+  }
+  
+  label {
+    font-size: 15px; /* This will set the font size of label elements to 1.2 times the font size of their parent element */
+  }
+
+
+  /* for downloads */
+  #idownload{
+    display: flex;
+    justify-content: space-between;
+    /* align-content: space-evenly; */
+  }
+
+  #check-list{
+    display: flex;
+    justify-content: space-between;
+  } 
+
+
+
+  /* Styles for done button */
+  
+  #doneButton,#previewButton{
+    background-color: #1a73e8;;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+  }
+  #compare-button {
+    background-color:#1a73e8;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    
+
+  }
+
+  #clear{
+    background-color:#1a73e8;;
+    color: white;
+    border: none;
+    padding: 5px 19px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+  }
+  #compare-button:hover {
+    background-color: #0f5ec4; 
+  }
+
+
+  #doneButton:hover {
+    background-color: #0f5ec4; 
+  }
+  #previewButton:hover {
+    background-color: #0f5ec4; 
+  }
+
+  #clear:hover {
+    background-color: #0f5ec4; 
+  }
+
+  /* #done-button {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  } */
+
+
+
+  #all-links-container, #broken-links-container {
+    border: 1px solid black;
+    width: 650px;
+    margin-left: 60px;
+    padding: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  #all-links-container {
+    border: 1px solid rgb(0, 96, 193);
+    margin-top: 25px;
+    height: 180px;
+    margin-bottom: 20px;
+    background-color: beige;
+  }
+  #links-list{
+    background-color: #f9f9f9;
+  }
+
+
+#all-links{
+    color: black;
+    font-size: 12px;
+    text-align: center;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+  #broken-links-container{
+    border: 1px solid rgb(0, 96, 193);
+    background-color: beige;
+    text-align: center;
+    height: 180px;
+  }
+
+  #broken-links{
+    color: black;
+    font-size: 12px;
+  }
+
+  #broken-links-list{
+    background-color: #f9f9f9;
+  }
+
+
+
+  #downloadPdfButton {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+  }
+
+  #downloadExcelButton{
+    background-color:#1a73e8;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    
+  }
+
+  #downloadComparisonButton{
+    background-color:#1a73e8;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 20px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+  }
+
+  #downloadComparisonButton:hover{
+    background-color: #0f5ec4;
+  }
+
+  #downloadExcelButton:hover{
+    background-color: #0f5ec4;
+  }
+  
+  #downloadPdfButton:hover {
+    background-color: #0f5ec4; 
+  }
+
+
+  #enable-check{
+    transform: scale(1.5);
+    border: #007bff;
+  }
+
+
+  /* for the checkbox and links */
+
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.checkbox-container i {
+    margin-right: 8px;
+}
+ 
+
+/* for download icons */
+
+#downloadPdfButton i.fa-file-pdf {
+  color: red;
+  /* font-size: 24px; Adjust size as needed */
+}
+
+#preview-button{
+  margin-left: 37px;
+}
+
+#compare-button{
+  margin-left: 140px;
+}
+
+#buttonClass{
+  display: flex;
+  justify-content: space-between;
+}
+
+Move the Generate button and Preview button to the left side */
+#doneButton,#previewButton {
+  margin-top: 30px;
+}
+
+/* Move the two download buttons to the right side */
+#buttonClass {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+/* Adjust individual button styles */
+/* #downloadPdfButton,
+#downloadExcelButton {
+  margin-left: 2%; /* Add margin between buttons */
+  #doneButton{
+    margin-right: 10px;
+  }
+  #clear{
+    margin-right: 10px;
+  }
+  
+#previewButton{
+  margin-right: 180px;
+} 
+
+#compare-button{
+  margin-left: 2px;
+}
+
+.checkbox-container label{
+  color:black ;
+  font-weight: bold;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+} 
+
+#countdown{
+  color:black ;
+  font-weight: bold;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.highlighted-link {
+  background-color: yellow;
+}
+
+
+/* Style for info  */
+.info-container {
+  position: relative;
+  display: inline-block;
+}
+
+.question-icon {
+  margin-left: 9px;
+  font-size: 10px; /* Adjust the size of the question mark */
+  background-color: #17a2b8;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px; /* Adjust padding to make it smaller */
+  cursor: pointer;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 150px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position the tooltip above the icon */
+  left: 50%;
+  margin-left: -75px; /* Center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.info-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+/* style for info ends here */
+
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+
+.night-mode {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Example of changing specific element styles in night mode */
+.night-mode #header #initial-view #check-list{
+  background-color: #333;
+}
+
+#initial-view {
+  /* Existing styles for initial view */
+  width: 640px;
+  padding: 30px;
+  text-align: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f9f9f9;
+  border: 2px solid #d3c3c3;
+  border-radius: 20px;
+}
+
+/* Additional styles for night mode within #initial-view */
+.night-mode #initial-view {
+  background-color: #333; /* Adjust background color for night mode */
+  color: rgb(234, 234, 234); /* Adjust text color for night mode */
+}
+
+/* Additional styles for night mode within #initial-view */
+.night-mode #initial-view {
+  background-color: #333; /* Adjust background color for night mode */
+  color: rgb(234, 234, 234); /* Adjust text color for night mode */
+}
+
+/* Change text color of text boxes to white in night mode */
+/* .night-mode #initial-view input[type="text"],
+.night-mode #initial-view textarea {
+  color: #fff;
+} */
+.night-mode #initial-view label  {
+  color:rgb(234, 234, 234);
+}
+
+/* Night Mode styles #1A202C;*/
+.night-mode {
+  background-color: rgb(117, 117, 117); 
+  color: rgb(234, 234, 234);
+}
+
+/* Update buttons in the initial view */
+.night-mode #compare-button,
+.night-mode #doneButton,
+.night-mode #previewButton,
+.night-mode #clear,
+.night-mode #downloadComparisonButton,
+.night-mode #downloadExcelButton {
+  background-color: #404040; /* Adjust background color */
+  color:rgb(234, 234, 234); /* Adjust text color */
+  border-color:rgb(234, 234, 234); /* Adjust border color */
+}
+
+/* Update icons in the download buttons */
+.night-mode #downloadComparisonButton i.fa-code-compare,
+.night-mode #downloadExcelButton i.fa-file-excel {
+  color: #ff6347; /* Adjust icon color */
+}
+
+/* Update text color for checkbox labels */
+.night-mode .checkbox-container label  {
+  color:rgb(234, 234, 234); /* Adjust text color */
+}
+#nightModeButton {
+  /* background-color: transparent; */
+  /* border: none; */
+  color: #150303;
+  font-size: 16px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px; /* Adjust top position */
+  right: 10px; /* Adjust right position */
+  border-radius: 10px;
+}
+
+#nightModeButton .fa-moon {
+  color: black; /* Set moon icon color to black */
+  
+}
+
+#downloadComparisonButton{
+  margin-left: 480px;
+
+}
+
