@@ -434,6 +434,14 @@ function downloadExcel() {
 const metaComparisonSheet = XLSX.utils.aoa_to_sheet(metaComparisonData);
 XLSX.utils.book_append_sheet(wb, metaComparisonSheet, "Meta Tags Comparison");
 
+const headerComparisonData = [["Current Page", "Target Page"]].concat(
+  Array.from(document.querySelectorAll('#head-comparison tbody tr')).map(row => {
+      return Array.from(row.cells).map(cell => cell.textContent);
+  })
+);
+const headerComparisonSheet = XLSX.utils.aoa_to_sheet(headerComparisonData);
+XLSX.utils.book_append_sheet(wb, headerComparisonSheet, "Head Tags Comparison");
+
   XLSX.writeFile(wb, 'comparison_report.xlsx');
 }
  /////////////////////////////////WORK-SHEET XLSX DOWNLOAD////////////////////////////////////////////////////////////-E
