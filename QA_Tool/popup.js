@@ -1,4 +1,35 @@
+// Define global variables
+let executionAllowed = true; // Global variable to track execution status
+let countdownInterval; // Variable to hold the countdown interval
+
+// Add event listener for the "Terminate" button
+document.getElementById('terminateButton').addEventListener('click', () => {
+    // Set executionAllowed to false to terminate execution
+    executionAllowed = false;
+
+    // Clear the countdown interval
+    clearInterval(countdownInterval);
+
+        // Reset checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+          checkbox.checked = false;
+      });
+
+    // Optionally, hide the countdown element
+    const countdownElement = document.getElementById('countdown');
+    if (countdownElement) {
+        countdownElement.style.display = 'none';
+    }
+});
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 document.getElementById('doneButton').addEventListener('click', async () => {
+  if (!executionAllowed) {
+    alert('Execution terminated.');
+    return;
+}
   const checkAllLinks = document.getElementById('checkAllLinks').checked;
   const checkBrokenLinks = document.getElementById('checkBrokenLinks').checked;
   const checkLocalLanguageLinks = document.getElementById('checkLocalLanguageLinks').checked;
@@ -508,9 +539,9 @@ function displayAkaLinks(akaLinks) {
   document.getElementById('akaTable').innerHTML = html;
 }
 
-function displayRedirectLinks(links) {
+function displayRedirectLinks(redirectLinks) {
   let html = '<table><tr><th>Redirect Links</th><th>Status</th></tr>';
-  links.forEach(link => {
+  redirectLinks.forEach(link => {
     const statusColor = link.status === 200 ? 'green' : 'red';
     html += `<tr><td>${highlightPercent20(link.url)}</td><td style="color: ${statusColor};">${link.status}</td></tr>`;
   });
@@ -582,7 +613,7 @@ async function checkLinks(checkAllLinks, checkBrokenLinks, checkLocalLanguageLin
         brokenLinks.push({ url: link.url, status });
       }
 
-      if((checkRedirect || checkAllDetails) && (status ===301)){
+      if((checkRedirect || checkAllDetails) && (status ===301) && (status === 302)){
         redirectLinks.push({url: link.url, status });
       }
 
