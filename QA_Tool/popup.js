@@ -306,7 +306,8 @@ function extractPageContent(doc) {
   };
 
   doc.querySelectorAll('h1, h2, p, a').forEach(el => {
-    content.textFields.push(el.innerText);
+    // Replace \n and \t with empty string, then trim and push inner text
+    content.textFields.push(el.innerText.replace(/\n/g, '').replace(/\t/g, '').trim());
   });
 
   doc.querySelectorAll('[aria-label]').forEach(el => {
@@ -346,6 +347,7 @@ doc.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
     text: header.innerText.replace(/\n/g, '').trim()
   });
 });
+
 
   return content;
 }
