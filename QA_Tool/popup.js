@@ -379,7 +379,7 @@ function displayTable(tableId, currentData, targetData) {
     if (currentContent !== targetContent) {
       // Highlight the cells where the content is different
       currentCell.style.backgroundColor = 'lightcoral';
-      targetCell.style.backgroundColor = 'lightcoral';
+      targetCell.style.backgroundColor = 'lightgreen';
     }
 
     row.appendChild(currentCell);
