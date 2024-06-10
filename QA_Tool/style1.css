@@ -134,6 +134,7 @@ input:checked + .slider:before {
 #downloadComparisonButton,
 #doneButton,
 #previewButton,
+#terminateButton,
 #clear{
   background-color: #1a73e8;
   color: white;
