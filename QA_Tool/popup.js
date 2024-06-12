@@ -305,11 +305,13 @@ function extractPageContent(doc) {
     header: []
   };
 
+  //extracting text
   doc.querySelectorAll('h1, h2, p, a').forEach(el => {
     // Replace \n and \t with empty string, then trim and push inner text
     content.textFields.push(el.innerText.replace(/\n/g, '').replace(/\t/g, '').trim());
   });
 
+  //extracting aria
   doc.querySelectorAll('[aria-label]').forEach(el => {
     content.ariaLinks.push({
       link: el.getAttribute('href'),
@@ -318,6 +320,7 @@ function extractPageContent(doc) {
     });
   });
 
+  //extracting img
   doc.querySelectorAll('img').forEach(img => {
     content.images.push({
       src: img.getAttribute('src'),
@@ -325,6 +328,7 @@ function extractPageContent(doc) {
     });
   });
 
+  //extracting meta
   doc.querySelectorAll('meta').forEach(meta => {
     const tagName = meta.getAttribute('name') || meta.getAttribute('property') || meta.getAttribute('http-equiv');
     const contentValue = meta.getAttribute('content');
@@ -353,39 +357,78 @@ doc.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
 }
 
 function displayDifferences(current, target) {
-  displayTable('text-comparison', current.textFields, target.textFields);
-  displayTable('aria-comparison', current.ariaLinks, target.ariaLinks);
-  displayTable('images-comparison', current.images, target.images);
-  displayTable('meta-comparison', current.metaTags, target.metaTags);
-  displayTable('head-comparison', current.header, target.header);
+  displayTable('text-comparison', current.textFields, target.textFields, 'text', 'text');
+  displayTable('aria-comparison', current.ariaLinks, target.ariaLinks, 'ariaLabel', 'ariaLabel');
+  displayTable('images-comparison', current.images, target.images, 'src', 'src');
+  displayTable('meta-comparison', current.metaTags, target.metaTags, 'tagName', 'contentValue');
+  displayTable('head-comparison', current.header, target.header, 'text', 'text');
 }
 
-function displayTable(tableId, currentData, targetData) {
+function displayTable(tableId, currentData, targetData, keyName, valueName) {
   const tbody = document.getElementById(tableId).querySelector('tbody');
   tbody.innerHTML = '';
 
-  const maxLength = Math.max(currentData.length, targetData.length);
-  for (let i = 0; i < maxLength; i++) {
-    const row = document.createElement('tr');
-    const currentCell = document.createElement('td');
-    const targetCell = document.createElement('td');
+  const matchedIndices = new Set();
 
-    const currentContent = currentData[i] ? JSON.stringify(currentData[i]) : '';
-    const targetContent = targetData[i] ? JSON.stringify(targetData[i]) : '';
+  currentData.forEach((currentItem, currentIndex) => {
+      const currentValue = currentItem[valueName];
+      const currentKey = currentItem[keyName];
 
-    currentCell.innerText = currentContent;
-    targetCell.innerText = targetContent;
+      let matchedTargetIndex = -1;
 
-    if (currentContent !== targetContent) {
-      // Highlight the cells where the content is different
-      currentCell.style.backgroundColor = 'lightcoral';
-      targetCell.style.backgroundColor = 'lightgreen';
-    }
+      for (let i = 0; i < targetData.length; i++) {
+          if (matchedIndices.has(i)) continue; // Skip already matched target items
 
-    row.appendChild(currentCell);
-    row.appendChild(targetCell);
-    tbody.appendChild(row);
-  }
+          const targetItem = targetData[i];
+          const targetValue = targetItem[valueName];
+          const targetKey = targetItem[keyName];
+
+          if (currentKey === targetKey && currentValue === targetValue) {
+              matchedTargetIndex = i;
+              matchedIndices.add(i);
+              break;
+          }
+      }
+
+      const row = document.createElement('tr');
+      const currentCell = document.createElement('td');
+      const targetCell = document.createElement('td');
+
+      currentCell.innerText = JSON.stringify(currentItem);
+      if (matchedTargetIndex !== -1) {
+          targetCell.innerText = JSON.stringify(targetData[matchedTargetIndex]);
+      } else {
+          targetCell.innerText = '';
+      }
+
+      if (matchedTargetIndex !== -1) {
+          currentCell.style.backgroundColor = 'lightgreen';
+          targetCell.style.backgroundColor = 'lightgreen';
+      } else {
+          currentCell.style.backgroundColor = 'lightcoral';
+      }
+
+      row.appendChild(currentCell);
+      row.appendChild(targetCell);
+      tbody.appendChild(row);
+  });
+
+  // Add remaining unmatched target items
+  targetData.forEach((targetItem, targetIndex) => {
+      if (!matchedIndices.has(targetIndex)) {
+          const row = document.createElement('tr');
+          const currentCell = document.createElement('td');
+          const targetCell = document.createElement('td');
+
+          currentCell.innerText = '';
+          targetCell.innerText = JSON.stringify(targetItem);
+          targetCell.style.backgroundColor = 'lightcoral';
+
+          row.appendChild(currentCell);
+          row.appendChild(targetCell);
+          tbody.appendChild(row);
+      }
+  });
 }
 
 function downloadExcel() {
@@ -597,17 +640,17 @@ async function checkLinks(checkAllLinks, checkBrokenLinks, checkLocalLanguageLin
   const akaLinks = [];
   const redirectLinks = [];
 
-  // const toggleSelector = document.getElementById('toggleSelector');
-  // const primaryAreaSelector = toggleSelector && toggleSelector.checked ? '#primaryArea ' : '';
+  const toggleSelector = document.getElementById('toggleSelector');
+  const primaryAreaSelector = toggleSelector && toggleSelector.checked ? '#primaryArea ' : '';
  
 
-  // const linksSelector = `${primaryAreaSelector}a`;
+  const linksSelector = `${primaryAreaSelector}a`;
   // const headingSelector = `${primaryAreaSelector}h1, ${primaryAreaSelector}h2, ${primaryAreaSelector}h3, ${primaryAreaSelector}h4, ${primaryAreaSelector}h5, ${primaryAreaSelector}h6`;
   // const ariaSelector = `${primaryAreaSelector}[aria-label]`;
   // const imageSelector = `${primaryAreaSelector}img`;
   // const metaSelector = `${primaryAreaSelector}meta`;
 
-  const links = Array.from(document.querySelectorAll('#primaryArea a')).map(link => ({
+  const links = Array.from(document.querySelectorAll(linksSelector)).map(link => ({
     url: link.href,
     text: link.textContent 
   }));
