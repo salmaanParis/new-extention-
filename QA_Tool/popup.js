@@ -301,26 +301,25 @@ function extractPageContent(doc) {
     textFields: [],
     ariaLinks: [],
     images: [],
-    metaTags:[],
+    metaTags: [],
     header: []
   };
 
-  //extracting text
+  // Extracting text
   doc.querySelectorAll('h1, h2, p, a').forEach(el => {
-    // Replace \n and \t with empty string, then trim and push inner text
     content.textFields.push(el.innerText.replace(/\n/g, '').replace(/\t/g, '').trim());
   });
 
-  //extracting aria
+  // Extracting aria
   doc.querySelectorAll('[aria-label]').forEach(el => {
     content.ariaLinks.push({
-      link: el.getAttribute('href'),
+      link: el.getAttribute('href') || '',
       label: el.getAttribute('aria-label'),
-      target: el.getAttribute('target')
+      target: el.getAttribute('target') || ''
     });
   });
 
-  //extracting img
+  // Extracting images
   doc.querySelectorAll('img').forEach(img => {
     const src = img.dataset.src || img.dataset.lazy || img.src;
     content.images.push({
@@ -329,37 +328,29 @@ function extractPageContent(doc) {
     });
   });
 
-  //extracting meta
+  // Extracting meta tags
   doc.querySelectorAll('meta').forEach(meta => {
     const tagName = meta.getAttribute('name') || meta.getAttribute('property') || meta.getAttribute('http-equiv');
     const contentValue = meta.getAttribute('content');
-
     if (tagName && contentValue) {
-        content.metaTags.push({ tagName, contentValue });
+      content.metaTags.push({ tagName, contentValue });
     }
-});
-
-// doc.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
-//   content.header.push({
-//     tag: header.tagName.toLowerCase(),
-//     text: header.innerText
-//   });
-// });
-
-doc.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
-  content.header.push({
-    tag: header.tagName.toLowerCase(),
-    text: header.innerText.replace(/\n/g, '').trim()
   });
-});
 
+  // Extracting headers
+  doc.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(header => {
+    content.header.push({
+      tag: header.tagName.toLowerCase(),
+      text: header.innerText.replace(/\n/g, '').trim()
+    });
+  });
 
   return content;
 }
 
 function displayDifferences(current, target) {
   displayTable('text-comparison', current.textFields, target.textFields, 'text', 'text');
-  displayTable('aria-comparison', current.ariaLinks, target.ariaLinks, 'ariaLabel', 'ariaLabel');
+  displayTable('aria-comparison', current.ariaLinks, target.ariaLinks, 'label', 'label');
   displayTable('images-comparison', current.images, target.images, 'src', 'src');
   displayTable('meta-comparison', current.metaTags, target.metaTags, 'tagName', 'contentValue');
   displayTable('head-comparison', current.header, target.header, 'text', 'text');
@@ -372,65 +363,75 @@ function displayTable(tableId, currentData, targetData, keyName, valueName) {
   const matchedIndices = new Set();
 
   currentData.forEach((currentItem, currentIndex) => {
-      const currentValue = currentItem[valueName];
-      const currentKey = currentItem[keyName];
+    const currentValue = currentItem[valueName];
+    const currentKey = currentItem[keyName];
 
-      let matchedTargetIndex = -1;
+    let matchedTargetIndex = -1;
 
-      for (let i = 0; i < targetData.length; i++) {
-          if (matchedIndices.has(i)) continue; // Skip already matched target items
+    for (let i = 0; i < targetData.length; i++) {
+      if (matchedIndices.has(i)) continue; // Skip already matched target items
 
-          const targetItem = targetData[i];
-          const targetValue = targetItem[valueName];
-          const targetKey = targetItem[keyName];
+      const targetItem = targetData[i];
+      const targetValue = targetItem[valueName];
+      const targetKey = targetItem[keyName];
 
-          if (currentKey === targetKey && currentValue === targetValue) {
-              matchedTargetIndex = i;
-              matchedIndices.add(i);
-              break;
-          }
+      if (currentKey === targetKey && currentValue === targetValue) {
+        matchedTargetIndex = i;
+        matchedIndices.add(i);
+        break;
       }
+    }
 
-      const row = document.createElement('tr');
-      const currentCell = document.createElement('td');
-      const targetCell = document.createElement('td');
+    const row = document.createElement('tr');
+    const currentCell = document.createElement('td');
+    const targetCell = document.createElement('td');
 
-      currentCell.innerText = JSON.stringify(currentItem);
-      if (matchedTargetIndex !== -1) {
-          targetCell.innerText = JSON.stringify(targetData[matchedTargetIndex]);
-      } else {
-          targetCell.innerText = '';
-      }
+    currentCell.innerText = JSON.stringify(currentItem);
+    if (matchedTargetIndex !== -1) {
+      targetCell.innerText = JSON.stringify(targetData[matchedTargetIndex]);
+    } else {
+      targetCell.innerText = '';
+    }
 
-      if (matchedTargetIndex !== -1) {
-          currentCell.style.backgroundColor = 'lightgreen';
-          targetCell.style.backgroundColor = 'lightgreen';
-      } else {
-          currentCell.style.backgroundColor = 'lightcoral';
-      }
+    if (matchedTargetIndex !== -1) {
+      currentCell.style.backgroundColor = 'lightgreen';
+      targetCell.style.backgroundColor = 'lightgreen';
+    } else {
+      currentCell.style.backgroundColor = 'lightcoral';
+    }
 
-      row.appendChild(currentCell);
-      row.appendChild(targetCell);
-      tbody.appendChild(row);
+    row.appendChild(currentCell);
+    row.appendChild(targetCell);
+    tbody.appendChild(row);
   });
 
   // Add remaining unmatched target items
   targetData.forEach((targetItem, targetIndex) => {
-      if (!matchedIndices.has(targetIndex)) {
-          const row = document.createElement('tr');
-          const currentCell = document.createElement('td');
-          const targetCell = document.createElement('td');
+    if (!matchedIndices.has(targetIndex)) {
+      const row = document.createElement('tr');
+      const currentCell = document.createElement('td');
+      const targetCell = document.createElement('td');
 
-          currentCell.innerText = '';
-          targetCell.innerText = JSON.stringify(targetItem);
-          targetCell.style.backgroundColor = 'lightcoral';
+      currentCell.innerText = '';
+      targetCell.innerText = JSON.stringify(targetItem);
+      targetCell.style.backgroundColor = 'lightcoral';
 
-          row.appendChild(currentCell);
-          row.appendChild(targetCell);
-          tbody.appendChild(row);
-      }
+      row.appendChild(currentCell);
+      row.appendChild(targetCell);
+      tbody.appendChild(row);
+    }
   });
 }
+
+// Example usage
+const currentDoc = document; // Replace with the actual document object for current page
+const targetDoc = document; // Replace with the actual document object for target page
+
+const currentContent = extractPageContent(currentDoc);
+const targetContent = extractPageContent(targetDoc);
+
+displayDifferences(currentContent, targetContent);
+
 
 function downloadExcel() {
   const wb = XLSX.utils.book_new();
