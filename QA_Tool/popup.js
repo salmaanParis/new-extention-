@@ -2,6 +2,7 @@
 let executionAllowed = true; // Global variable to track execution status
 let countdownInterval; // Variable to hold the countdown interval
 
+
 // Add event listener for the "Terminate" button
 document.getElementById('terminateButton').addEventListener('click', () => {
     // Set executionAllowed to false to terminate execution
@@ -30,6 +31,7 @@ document.getElementById('doneButton').addEventListener('click', async () => {
     alert('Execution terminated.');
     return;
 }
+  const toggleSelector = document.getElementById('toggleSelector').checked;
   const checkAllLinks = document.getElementById('checkAllLinks').checked;
   const checkBrokenLinks = document.getElementById('checkBrokenLinks').checked;
   const checkLocalLanguageLinks = document.getElementById('checkLocalLanguageLinks').checked;
@@ -71,7 +73,7 @@ document.getElementById('doneButton').addEventListener('click', async () => {
     const [{ result }] = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
       func: checkLinks,
-      args: [checkAllLinks, checkBrokenLinks, checkLocalLanguageLinks, checkAllDetails, checkHeading, ariaCheck, imageCheck,checkMeta, checkAka, checkRedirect]
+      args: [toggleSelector, checkAllLinks, checkBrokenLinks, checkLocalLanguageLinks, checkAllDetails, checkHeading, ariaCheck, imageCheck,checkMeta, checkAka, checkRedirect]
     });
 
     console.log('Link check result:', result); // Debugging
@@ -626,7 +628,7 @@ function highlightPercent20(url) {
   return url.replace(/%20/g, '<span style="color: red;">%20</span>');
 }
 
-async function checkLinks(checkAllLinks, checkBrokenLinks, checkLocalLanguageLinks, checkAllDetails, checkHeading, ariaCheck, imageCheck, checkMeta, checkAka, checkRedirect) {
+async function checkLinks(toggleSelector, checkAllLinks, checkBrokenLinks, checkLocalLanguageLinks, checkAllDetails, checkHeading, ariaCheck, imageCheck, checkMeta, checkAka, checkRedirect) {
   const allLinks = [];
   const brokenLinks = [];
   const localLanguageLinks = [];
@@ -643,21 +645,24 @@ async function checkLinks(checkAllLinks, checkBrokenLinks, checkLocalLanguageLin
   const redirectLinks = [];
 
   // const toggleSelector = document.getElementById('toggleSelector');
-  // const primaryAreaSelector = toggleSelector && toggleSelector.checked ? '#primaryArea ' : '';
+  const primaryAreaSelector = toggleSelector  ? '#primaryArea' : '';
  
 
-  // const linksSelector = `${primaryAreaSelector}a`;
-  // const headingSelector = `${primaryAreaSelector}h1, ${primaryAreaSelector}h2, ${primaryAreaSelector}h3, ${primaryAreaSelector}h4, ${primaryAreaSelector}h5, ${primaryAreaSelector}h6`;
-  // const ariaSelector = `${primaryAreaSelector}[aria-label]`;
-  // const imageSelector = `${primaryAreaSelector}img`;
-  // const metaSelector = `${primaryAreaSelector}meta`;
+  const linksSelector = `${primaryAreaSelector} a[href]`;
+  const headingSelector = `${primaryAreaSelector} h1, ${primaryAreaSelector} h2, ${primaryAreaSelector} h3, ${primaryAreaSelector} h4, ${primaryAreaSelector} h5, ${primaryAreaSelector} h6`;
+  const ariaSelector = `${primaryAreaSelector} [aria-label]`;
+  const imageSelector = `${primaryAreaSelector} img`;
+  // const metaSelector = `${primaryAreaSelector} meta`;
 
-  const links = Array.from(document.querySelectorAll('#primaryArea a')).map(link => ({
+  const links = Array.from(document.querySelectorAll(linksSelector)).map(link => ({
     url: link.href,
-    text: link.textContent 
+    text: link.textContent.trim() 
   }));
+  console.log('Links found:', links);
 
+  
   for (const link of links) {
+    console.log(`Checking link: ${link.url}`);
     try {
       const response = await fetch(link.url);
       const status = response.status;
@@ -678,11 +683,12 @@ async function checkLinks(checkAllLinks, checkBrokenLinks, checkLocalLanguageLin
 
     } catch (error) {
       console.log(error);
+      console.error(`Error fetching ${link.url}:`, error);
     }
   }
 
   if (checkHeading || checkAllDetails) {
-    const headings = Array.from(document.querySelectorAll('h1,h2,h3,h4,h5,h6')).map(heading => ({
+    const headings = Array.from(document.querySelectorAll(headingSelector)).map(heading => ({
       tag: heading.tagName.toLowerCase(),
       text: heading.textContent.trim()
     }));
@@ -690,7 +696,7 @@ async function checkLinks(checkAllLinks, checkBrokenLinks, checkLocalLanguageLin
   }
 
   if (ariaCheck || checkAllDetails) {
-    const ariaElements = Array.from(document.querySelectorAll('[aria-label]')).map(element => ({
+    const ariaElements = Array.from(document.querySelectorAll(ariaSelector)).map(element => ({
       element: element.tagName.toLowerCase(),
       ariaLabel: element.getAttribute('aria-label'),
       target: element.getAttribute('href') ||'',
@@ -700,7 +706,7 @@ async function checkLinks(checkAllLinks, checkBrokenLinks, checkLocalLanguageLin
   }
 
   if (imageCheck || checkAllDetails) {
-    const images = Array.from(document.querySelectorAll('img')).map(img => ({
+    const images = Array.from(document.querySelectorAll(imageSelector)).map(img => ({
       src: img.src,
       alt: img.alt || 'No alt text'
     }));
@@ -719,10 +725,10 @@ async function checkLinks(checkAllLinks, checkBrokenLinks, checkLocalLanguageLin
 //Short URL Check
 if (checkAka || checkAllDetails) {
   const filteredLinks = Array.from(document.querySelectorAll('a'))
-    .filter(link => link.href.includes('aka.ms') || !link.href.includes('microsoft.com') && !link.href.includes('www.')&& !link.href.includes('com'))
+    .filter(link => link.href.includes('aka.ms') || !link.href.includes('www.microsoft.com') &&!link.href.includes('microsoft.com') && !link.href.includes('javascript'))
     .map(link => ({
       url: link.href,
-      status: link.href.includes('aka.ms') || !link.href.includes('microsoft.com') && !link.href.includes('www.') && !link.href.includes('com') ? 'Included' : 'Excluded'
+      status: link.href.includes('aka.ms') || !link.href.includes('www.microsoft.com') &&!link.href.includes('microsoft.com') && !link.href.includes('javascript')  ? 'Included' : 'Excluded'
     }));
 
   akaLinks.push(...filteredLinks);
