@@ -322,9 +322,10 @@ function extractPageContent(doc) {
 
   //extracting img
   doc.querySelectorAll('img').forEach(img => {
+    const src = img.dataset.src || img.dataset.lazy || img.src;
     content.images.push({
-      src: img.getAttribute('src'),
-      alt: img.getAttribute('alt')
+      src: src,
+      alt: img.alt || 'No alt text'
     });
   });
 
@@ -640,17 +641,17 @@ async function checkLinks(checkAllLinks, checkBrokenLinks, checkLocalLanguageLin
   const akaLinks = [];
   const redirectLinks = [];
 
-  const toggleSelector = document.getElementById('toggleSelector');
-  const primaryAreaSelector = toggleSelector && toggleSelector.checked ? '#primaryArea ' : '';
+  // const toggleSelector = document.getElementById('toggleSelector');
+  // const primaryAreaSelector = toggleSelector && toggleSelector.checked ? '#primaryArea ' : '';
  
 
-  const linksSelector = `${primaryAreaSelector}a`;
+  // const linksSelector = `${primaryAreaSelector}a`;
   // const headingSelector = `${primaryAreaSelector}h1, ${primaryAreaSelector}h2, ${primaryAreaSelector}h3, ${primaryAreaSelector}h4, ${primaryAreaSelector}h5, ${primaryAreaSelector}h6`;
   // const ariaSelector = `${primaryAreaSelector}[aria-label]`;
   // const imageSelector = `${primaryAreaSelector}img`;
   // const metaSelector = `${primaryAreaSelector}meta`;
 
-  const links = Array.from(document.querySelectorAll(linksSelector)).map(link => ({
+  const links = Array.from(document.querySelectorAll('#primaryArea a')).map(link => ({
     url: link.href,
     text: link.textContent 
   }));
